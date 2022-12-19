@@ -1,0 +1,23 @@
+version: "3"
+services:
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_DB=postgres
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+  
+  odoo:
+    image: odoo:14
+    restart: always
+    ports:
+      - "80:8069"
+    volumes:
+      - ./odoo:/mnt/extra-addons
+      - ./odoo-data:/var/lib/odoo
+    links:
+      - db:db
